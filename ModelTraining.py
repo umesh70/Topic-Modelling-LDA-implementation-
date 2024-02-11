@@ -60,9 +60,9 @@ corpus = [dictionary.doc2bow(doc) for doc in finaldocs]
 print('number of unique tokens:%d' % len(dictionary))
 print('number of documents: %d' % len(corpus))
 
-num_of_topics = 15
-chunksize = 2
-passes = 50
+num_of_topics = 6
+chunksize = 1
+passes = 30
 iteration = 100
 eval_every = None
 

@@ -24,7 +24,7 @@ def text_preprocessing(docs):
     return docs
 
 user_response = 'Machine Learning is a subset of artificial intelligence that focus on learning from data to develop an algorithm that can be used to make a prediction.Machine Learning uses a data-driven approach, It is typically trained on historical data and then used to make predictions on new data.ML can find patterns and insights in large datasets that might be difficult for humans to discover.'
-llm_response = 'explain any subset of artificial intelligence and its aspects'
+llm_response = 'A computer machine, commonly referred to simply as a computer, is an electronic device that is capable of performing a variety of tasks by executing sequences of instructions.Computers can process data in various forms, such as text, numbers, images, and sound. They can perform calculations, manipulate data, and generate outputs based on input.Computers have storage devices, such as hard disk drives (HDDs) or solid-state drives (SSDs), which allow them to store data and programs for later use.'
 
 buffer_responses = [user_response,llm_response]
 cleaned_responses = text_preprocessing(buffer_responses)

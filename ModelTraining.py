@@ -26,11 +26,12 @@ def reading_data(pdf_path):
 doc1_path  = "2402.05679.pdf"
 doc2_path = "2201.01943.pdf"
 doc3_path = "0520.pdf"
+doc4_path = "thebook.pdf"
 doc1_text = reading_data(doc1_path)
 doc2_text = reading_data(doc2_path)
 doc3_text = reading_data(doc3_path)
-
-docs = [doc1_text,doc2_text,doc3_text]
+doc4_text = reading_data(doc4_path)
+docs = [doc1_text,doc2_text,doc3_text,doc4_text]
 
 def text_preprocessing(docs):
     #tokenzation
@@ -59,7 +60,7 @@ corpus = [dictionary.doc2bow(doc) for doc in finaldocs]
 print('number of unique tokens:%d' % len(dictionary))
 print('number of documents: %d' % len(corpus))
 
-num_of_topics = 3
+num_of_topics = 10
 chunksize = 1
 passes = 30
 iteration = 100
@@ -79,5 +80,13 @@ model = LdaModel(
     passes=passes,
     eval_every=eval_every
 )
+top_topics = model.top_topics(corpus)
+
+# Average topic coherence is the sum of topic coherences of all topics, divided by the number of topics.
+avg_topic_coherence = sum([t[1] for t in top_topics]) / num_of_topics
+print('Average topic coherence: %.4f.' % avg_topic_coherence)
+
+from pprint import pprint
+pprint(top_topics)
 model.save('trained_model.gensim')
 dictionary.save('build_dictionary.dict')

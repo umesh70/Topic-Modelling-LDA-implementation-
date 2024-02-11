@@ -13,7 +13,6 @@ def text_preprocessing(docs):
     for idx in range(len(docs)):
         docs[idx] = docs[idx].lower()
         docs[idx] = tokenizer.tokenize(docs[idx])
-
         
     #remove numbers
     docs = [[token for token in doc if not token.isnumeric()]for doc in docs]
@@ -25,7 +24,7 @@ def text_preprocessing(docs):
     return docs
 
 user_response = 'Machine Learning is a subset of artificial intelligence that focus on learning from data to develop an algorithm that can be used to make a prediction.Machine Learning uses a data-driven approach, It is typically trained on historical data and then used to make predictions on new data.ML can find patterns and insights in large datasets that might be difficult for humans to discover.'
-llm_response = 'what is economics and how it is beneficial for the developement of society'
+llm_response = 'explain any subset of artificial intelligence and its aspects'
 
 buffer_responses = [user_response,llm_response]
 cleaned_responses = text_preprocessing(buffer_responses)

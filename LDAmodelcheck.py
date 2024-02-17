@@ -24,7 +24,7 @@ def text_preprocessing(docs):
     return docs
 
 user_response = 'Machine Learning is a subset of artificial intelligence that focus on learning from data to develop an algorithm that can be used to make a prediction.Machine Learning uses a data-driven approach, It is typically trained on historical data and then used to make predictions on new data.ML can find patterns and insights in large datasets that might be difficult for humans to discover.'
-llm_response = 'Accounting, also known as accountancy, is the processing of information about economic entities, such as businesses and corporations.Accounting measures the results of an organization economic activities and conveys this information to a variety of stakeholders, including investors, creditors, management, and regulatorsPractitioners of accounting are known as accountants. The terms "accounting" and "financial reporting" are often used interchangeably.'
+llm_response = 'Machine learning is a subset of artificial intelligence (AI) that focuses on the development of algorithms and models that enable computers to learn from and make predictions or decisions based on data without being explicitly programmed. The core idea behind machine learning is to enable computers to automatically learn and improve from experience In traditional programming, a programmer writes rules and instructions for the computer to follow. However, in machine learning, the programmer provides the computer with data and algorithms that allow the computer to learn patterns and relationships within the data and make predictions or decisions based on that learning.'
 
 buffer_responses = [user_response,llm_response]
 cleaned_responses = text_preprocessing(buffer_responses)

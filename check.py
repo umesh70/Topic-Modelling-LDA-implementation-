@@ -1,44 +1,54 @@
-from transformers import AutoTokenizer, AutoModel
-import torch
-import torch.nn.functional as F
-from scipy.spatial import distance
-from sklearn.metrics.pairwise import cosine_similarity
-#Mean Pooling - Take attention mask into account for correct averaging
-def mean_pooling(model_output, attention_mask):
-    token_embeddings = model_output[0] #First element of model_output contains all token embeddings
-    input_mask_expanded = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).float()
-    return torch.sum(token_embeddings * input_mask_expanded, 1) / torch.clamp(input_mask_expanded.sum(1), min=1e-9)
+import openai  # Install if needed: pip install openai 
+from langchain import PromptTemplate
+from langchain.chat_models import ChatOpenAI
+from langchain.chains import LLMChain
+from langchain.callbacks import get_openai_callback
+from langchain_openai import OpenAI
 
-llm_response = 'Machine learning is a subset of artificial intelligence (AI) that focuses on the evelopment of algorithms and statistical models that enable computers to perform tasks without being explicitly programmed. In traditional programming, a programmer writes explicit instructions for the computer to follow, whereas in machine learning, the computer learns from data provided to it.The core idea behind machine learning is to enable computers to learn from data patterns and make decisions or predictions based on that learning. This process involves training a model on a dataset, which typically includes input data (features) and corresponding output labels. The model learns the underlying patterns in the data and can then make predictions or decisions when given new, unseen data.'
-user_response = 'i dont know about machine learning'
+# Set your OpenAI API key
+openai.api_key = "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" 
 
-# Sentences we want sentence embeddings for
-sentences = [llm_response,user_response]
+# Sample texts
+text1 = "In-depth research and tailored communication are key. Could you elaborate on your background in photography and how it relates to your sales career?"
+text2 = " I dont have a background in photography." 
 
-# Load model from HuggingFace Hub
-tokenizer = AutoTokenizer.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
-model = AutoModel.from_pretrained('sentence-transformers/all-MiniLM-L6-v2')
+def query_gpt35( text1, text2):
+    
+    template= f"""
+    Carefully analyze the logical relationship between these two sentences. and answer the questions.
 
-# Tokenize sentences
-encoded_input = tokenizer(sentences, padding=True, truncation=True, return_tensors='pt')
+    Sentence 1: {text1}
+    Sentence 2: {text2}
 
-# Compute token embeddings
-with torch.no_grad():
-    model_output = model(**encoded_input)
+    Generate a Python dictionary with the following format: 'similarity': "similarity_score", 'implication': implication_answer, 'explanation': explanation, 'explanation_score':"score"
+    use numerical representation for similarity.
+    """ 
+    
+    question1 = " On a scale of 1 to 10, how semantically similar are these sentences ?"
+    llm = llm = ChatOpenAI(temperature=0, openai_api_key='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', model="gpt-3.5-turbo-0613")
+    prompt  = PromptTemplate(template = template, input_variables = ["text1","text2"])
+    conversation = LLMChain(llm = llm , prompt= prompt , verbose=True)
+    with get_openai_callback() as cb:
+        answer = conversation.run(question = question1)    
+    return answer,cb
 
-# Perform pooling
-sentence_embeddings = mean_pooling(model_output, encoded_input['attention_mask'])
-
-# Normalize embeddings
-sentence_embeddings = F.normalize(sentence_embeddings, p=2, dim=1)
-
-print("Sentence embeddings:")
-print(sentence_embeddings)
-
-similarity = cosine_similarity(
-    sentence_embeddings[0].reshape(1, -1),
-    sentence_embeddings[1].reshape(1, -1)
-)[0][0]
-
-print("similarity:", similarity) 
-
+def question_compare(question,answer):
+    template = f"""
+    Carefully analyze the logical relationship between these the pair of given question and answer and answer the questions given to you.                
+    Sentence 1: {question}
+    Sentence 2: {answer}
+    Generate a Python dictionary with the following format: 'similar_topic_Score': "score", 'implication': implication_answer, 'explanation': explanation, 'explanation_score':"score"
+    use numerical representation for similarity.
+    
+    """
+    question1 = " On a scale of 1 to 10, are these sentences imply the similar domain?"
+    llm = llm = ChatOpenAI(temperature=0, openai_api_key='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', model="gpt-3.5-turbo-0613")
+    prompt  = PromptTemplate(template = template, input_variables = ["text1","text2"])
+    conversation = LLMChain(llm = llm , prompt= prompt , verbose=True)
+    with get_openai_callback() as cb:
+        answer = conversation.run(question = question1)    
+    return answer,cb
+    
+# Example usage 
+result,cb = question_compare(question=text1, answer=text2)
+print(result,cb) 

@@ -21,7 +21,7 @@ def query_gpt35( text1, text2):
     Sentence 1: {text1}
     Sentence 2: {text2}
 
-    Generate a Python dictionary with the following rmat:'Problem_solving':"numeric_score", 'Team_work':"numeric_score",'Python_skills':"numeric_score",'NLP':"numeric_score",'Machine learning Skills':"numeric_score",
+    Generate a Python dictionary with the following rmat:'similar_topic_Score': "score", 'implication': implication_answer, 'explanation': explanation, 'explanation_score':"score",'Problem_solving':"numeric_score", 'Team_work':"numeric_score",'Python_skills':"numeric_score",'NLP':"numeric_score",'Machine learning Skills':"numeric_score",
     use numerical representation for similarity.
     """ 
     

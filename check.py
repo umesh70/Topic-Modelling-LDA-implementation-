@@ -6,9 +6,6 @@ from langchain.callbacks import get_openai_callback
 from langchain_openai import OpenAI
 import venv
 
-# Set your OpenAI API key
-#openai.api_key = "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" 
-
 # Sample texts
 text1 = "In-depth research and tailored communication are key. Could you elaborate on your background in photography and how it relates to your sales career?"
 text2 = " I dont have a background in photography." 
